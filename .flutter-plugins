@@ -1,7 +1,13 @@
 # This is a generated file; do not edit or check into version control.
-shared_preferences=/Users/rencar1/Development/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3/
-url_launcher=/Users/rencar1/Development/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.9/
-url_launcher_linux=/Users/rencar1/Development/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-2.0.1/
-url_launcher_macos=/Users/rencar1/Development/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-2.0.1/
-url_launcher_web=/Users/rencar1/Development/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.4/
-url_launcher_windows=/Users/rencar1/Development/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-2.0.2/
+path_provider_linux=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.0.2/
+path_provider_windows=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.3/
+shared_preferences=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.7/
+shared_preferences_linux=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.0.2/
+shared_preferences_macos=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.2/
+shared_preferences_web=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.2/
+shared_preferences_windows=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.0.2/
+url_launcher=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.9/
+url_launcher_linux=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-2.0.1/
+url_launcher_macos=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-2.0.1/
+url_launcher_web=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.4/
+url_launcher_windows=/usr/local/Caskroom/flutter/2.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-2.0.2/
