@@ -1,5 +1,6 @@
  import 'package:flutter/material.dart';
  import 'package:flutter/foundation.dart';
+ import 'package:clipboard/clipboard.dart';
  import 'package:intl/intl.dart';
  import 'package:metadata_fetch/metadata_fetch.dart';
  import 'dart:convert';
@@ -45,10 +46,11 @@ class _HomeState extends State<Home> {
 
   initState() {
     super.initState();
-    init();
+    _init();
+    _setClipboard();
   }
 
-  void init () async {
+  void _init () async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var list = prefs.getString('linkList');
 
@@ -63,6 +65,12 @@ class _HomeState extends State<Home> {
         );
       }).toList();
       _items = linkList;
+    });
+  }
+
+  void _setClipboard() async {
+    FlutterClipboard.paste().then((value) {
+      myController.text = value;
     });
   }
 
@@ -83,6 +91,7 @@ class _HomeState extends State<Home> {
       _items.removeAt(oldIndex);
       _items.insert(newIndex, link);
     });
+    setListAtLocal();
   }
 
   void addList () async {
@@ -103,6 +112,7 @@ class _HomeState extends State<Home> {
       _items.add(result);
     });
 
+    myController.text = '';
     setListAtLocal();
   }
 

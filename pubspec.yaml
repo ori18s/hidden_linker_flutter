@@ -28,6 +28,7 @@ dependencies:
   http: ^0.13.3
   metadata_fetch: ^0.4.1
   url_launcher: ^6.0.9
+  clipboard: ^0.1.3
 
 
 
