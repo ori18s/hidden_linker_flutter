@@ -6,6 +6,9 @@
  import 'dart:convert';
  import 'package:url_launcher/url_launcher.dart';
  import 'package:shared_preferences/shared_preferences.dart';
+ import 'package:flutter_slidable/flutter_slidable.dart';
+ import 'package:share/share.dart';
+ import 'package:hidden_linker_flutter/screens/edit_link_page.dart';
 
  class Link {
   String id;
@@ -13,15 +16,17 @@
   String title;
   String description;
   String createdAt;
+  bool checked;
 
-  Link({this.id, this.url, this.title, this.description, this.createdAt});
+  Link({this.id, this.url, this.title, this.description, this.createdAt, this.checked});
 
   Link.fromJson(Map<String, String> json)
       : id = json['id'],
         url = json['url'],
         title = json['title'],
         description = json['description'],
-        createdAt = json['createdAt'];
+        createdAt = json['createdAt'],
+        checked = json['chekced'].toLowerCase() == 'true';
 
   Map<String, dynamic> toJson() {
     return {
@@ -30,8 +35,17 @@
       'title': title,
       'description': description,
       'createdAt': createdAt,
+      'checked' : checked,
     };
   }
+}
+
+class ScreenArguments {
+  final String title;
+  final String description;
+  final String url;
+
+  ScreenArguments(this.title, this.description, this.url);
 }
     
 class Home extends StatefulWidget {
@@ -62,6 +76,7 @@ class _HomeState extends State<Home> {
           title: item['title'],
           description: item['description'],
           createdAt: item['createdAt'],
+          checked: item['checked'],
         );
       }).toList();
       _items = linkList;
@@ -106,6 +121,7 @@ class _HomeState extends State<Home> {
       title: urlData.title != null ? urlData.title : '',
       description: urlData.description != null ? urlData.description : '',
       createdAt: createdAt,
+      checked: false,
     );
 
     setState(() {
@@ -129,60 +145,108 @@ class _HomeState extends State<Home> {
       .toList();
 
   Widget _buildTenableListTile(Link item, int index) {
-    return Dismissible(
+    return Slidable(
       key: Key(item.id),
-      dismissThresholds: {
-        DismissDirection.endToStart: 0.4,
-        DismissDirection.startToEnd: 0.4,
-      },
-      crossAxisEndOffset: 0.1,
-      onDismissed: (direction) {
-        setState(() {
-          _items.removeAt(index);
-        });
-        setListAtLocal();
-      },
-      background: Container(color: Colors.red),
-      child: ListTile(
-        key: ValueKey(item.id),
-        title: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Text(
-                "${item.title}",
-                overflow: TextOverflow.ellipsis,
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child:  Container(
+              child: Checkbox(
+                value: item.checked,
+                onChanged: (bool value) {
+                  item.checked = value;
+                  setState(() {
+                    _items = _items;
+                  });
+                  setListAtLocal();
+                }
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Container(
-              margin: const EdgeInsets.only(left: 10.0),
-                child : Text(
-                  "${item.description}",
-                  overflow: TextOverflow.ellipsis,
+          ),
+          Expanded(
+            flex: 9,
+            child: ListTile(
+              contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+              title: Row(
+                children: <Widget>[
+                  Expanded(
+                    // flex: 2,
+                    flex: 7,
+                    child: Text(
+                      "${item.title}",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  // Expanded(
+                  //   flex: 5,
+                  //   child: Container(
+                  //   margin: const EdgeInsets.only(left: 10.0),
+                  //     child : Text(
+                  //       "${item.description}",
+                  //       overflow: TextOverflow.ellipsis,
+                  //     ),
+                  //   ),
+                  // ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                    margin: const EdgeInsets.only(left: 10.0),
+                      child : Text("${item.createdAt}")
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                '${item.url}',
+                style: TextStyle(
+                  color: Colors.black,
                 ),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-              margin: const EdgeInsets.only(left: 10.0),
-                child : Text("${item.createdAt}")
-              ),
-            ),
-          ],
-        ),
-        subtitle: Text(
-          '${item.url}',
-          style: TextStyle(
-            color: Colors.black,
+              onTap: () async => await launch('${item.url}'),
+            )
           ),
-        ),
-        onTap: () async => await launch('${item.url}'),
+        ]
       ),
+      
+      actions: <Widget>[
+        IconSlideAction(
+          caption: 'Share',
+          color: Colors.indigo,
+          icon: Icons.share,
+          onTap: () => Share.share(item.url),
+        ),
+      ],
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.blue,
+          icon: Icons.edit,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditLinkPage()
+              )
+          );
+          },
+        ),
+        IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () {
+            setState(() {
+              _items.removeAt(index);
+            });
+            setListAtLocal();
+          },
+        ),
+      ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
