@@ -26,7 +26,7 @@
         title = json['title'],
         description = json['description'],
         createdAt = json['createdAt'],
-        checked = json['chekced'].toLowerCase() == 'true';
+        checked = json['checked'].toLowerCase() == 'true';
 
   Map<String, dynamic> toJson() {
     return {
