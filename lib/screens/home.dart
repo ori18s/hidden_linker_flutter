@@ -9,6 +9,7 @@
  import 'package:flutter_slidable/flutter_slidable.dart';
  import 'package:share/share.dart';
  import 'package:hidden_linker_flutter/screens/edit_link_page.dart';
+ import 'dart:developer' as developer;
 
  class Link {
   String id;
@@ -41,9 +42,9 @@
 }
 
 class ScreenArguments {
-  final String title;
-  final String description;
-  final String url;
+  final dynamic title;
+  final dynamic description;
+  final dynamic url;
 
   ScreenArguments(this.title, this.description, this.url);
 }
@@ -57,7 +58,6 @@ class _HomeState extends State<Home> {
   List<Link> _items = [];
 
   final myController = TextEditingController();
-
   initState() {
     super.initState();
     _init();
@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
     String id = DateFormat('yyyyMMddkkmmsss').format(DateTime.now());
     String createdAt = DateFormat('yyyy-MM-dd').format(DateTime.now());
     dynamic urlData = await getUrlData(url);
-
+    
     var result = Link(
       id: id,
       url: myController.text,
@@ -224,12 +224,21 @@ class _HomeState extends State<Home> {
           color: Colors.blue,
           icon: Icons.edit,
           onTap: () {
-            Navigator.push(
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => EditLinkPage()
+            //   )
+            // );
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                  builder: (context) => EditLinkPage()
-              )
-          );
+              EditLinkPage.routeName,
+              arguments: ScreenArguments(
+                'TEST',
+                'TEST',
+                'function.',
+              ),
+            );
           },
         ),
         IconSlideAction(
@@ -246,7 +255,6 @@ class _HomeState extends State<Home> {
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
