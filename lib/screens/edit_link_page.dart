@@ -1,58 +1,47 @@
 import 'package:flutter/cupertino.dart';
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:hidden_linker_flutter/screens/Home.dart';
 import 'dart:developer' as developer;
-
 
 class EditLinkPage extends StatefulWidget {
   static const routeName = '/editLink';
 
-  final String title;
-  final String description;
-  final String url;
+  // final String title;
+  // final String description;
+  // final String url;
 
-  const EditLinkPage({
-    Key key,
-    this.title,
-    this.description,
-    this.url
-  }) : super(key: key);
+  // const EditLinkPage({
+  //   Key key,
+  //   this.title,
+  //   this.description,
+  //   this.url
+  // }) : super(key: key);
+
   @override
   _EditLinkState createState() => _EditLinkState();
 }
 
 class _EditLinkState extends State<EditLinkPage> {
-
+  var linkId;
 
   final titleController = TextEditingController();
-  final desController = TextEditingController();
   final urlController = TextEditingController();
+  final desController = TextEditingController();
 
-  // initState() {
-  //   super.initState();
-  //   _init();
-  // }
-
-  // void _init () {
-  //   dynamic args = ModalRoute.of(context).settings.arguments;
-  //   titleController.text = args.title;  
-  //   // developer.log('log me', name: 'my.app.category');
-  //   // print('test $title');
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final args = ModalRoute.of(context).settings.arguments as Map<String, String>;
+      titleController.text = args["title"];
+      urlController.text = args["url"];
+      desController.text = args["description"];
+      linkId = args["linkId"];
+    });
+  }
   
 
   Widget build(BuildContext context) {
-    dynamic args = ModalRoute.of(context).settings.arguments;
-    print('args $args');
-    // titleController.text = args.title;  
-    // return Scaffold(
-    //   body: Center(
-    //     child: Text("1234"),
-    //   ),
-    // );
-    // dynamic args = ModalRoute.of(context).settings.arguments;
-    // titleController.text = args.title;
-    
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Link"),
@@ -67,7 +56,7 @@ class _EditLinkState extends State<EditLinkPage> {
             child: TextField(
                 controller: titleController,
                 autocorrect: true,
-                decoration: InputDecoration(hintText: 'Enter Name Here'),
+                decoration: InputDecoration(hintText: 'Enter Title'),
               )
             ),
 
@@ -75,9 +64,9 @@ class _EditLinkState extends State<EditLinkPage> {
             width: 280,
             padding: EdgeInsets.all(10.0),
             child: TextField(
-                // controller: studentClass,
+                controller: urlController,
                 autocorrect: true,
-                decoration: InputDecoration(hintText: 'Enter Class Here'),
+                decoration: InputDecoration(hintText: 'Enter URL'),
               )
             ),
 
@@ -85,15 +74,23 @@ class _EditLinkState extends State<EditLinkPage> {
             width: 280,
             padding: EdgeInsets.all(10.0),
             child: TextField(
-                // controller: phoneNumber,
+                controller: desController,
                 autocorrect: true,
-                decoration: InputDecoration(hintText: 'Enter Phone Number Here'),
+                decoration: InputDecoration(hintText: 'Enter Description'),
               )
             ),
 
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(
+                  context,
+                  {
+                    "title": titleController.text,
+                    "url": urlController.text,
+                    "description": desController.text,
+                    "linkId": linkId,
+                  }
+                );
               },
               child: Text(
                 'Edit',

@@ -15,24 +15,26 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Hidden Linker'),
-      onGenerateRoute: (settings) {
-        // If you push the PassArguments route
-        if (settings.name == EditLinkPage.routeName) {
-          final args = settings.arguments as ScreenArguments;
-
-          return MaterialPageRoute(
-            builder: (context) {
-              return EditLinkPage(
-                title: args.title,
-                description: args.description,
-                url: args.url,
-              );
-            },
-          );
-        }
-        assert(false, 'Need to implement ${settings.name}');
-        return null;
+      routes: {
+        EditLinkPage.routeName: (context) => EditLinkPage()
       },
+      // onGenerateRoute: (settings) {
+      //   // If you push the PassArguments route
+      //   if (settings.name == EditLinkPage.routeName) {
+      //     final ScreenArguments args = settings.arguments;
+
+      //     return MaterialPageRoute(
+      //       builder: (context) {
+      //         return EditLinkPage(
+      //           title: args.title,
+      //           description: args.description,
+      //           url: args.url,
+      //         );
+      //       },
+      //     );
+      //   }
+      //   return null;
+      // },
     );
   }
 }

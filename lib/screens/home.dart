@@ -138,6 +138,30 @@ class _HomeState extends State<Home> {
     prefs.setString('linkList', list);
   }
 
+  _moveEditPageAndEdit(BuildContext context, Link link) async {
+    final result = await Navigator.pushNamed(
+      context,
+      EditLinkPage.routeName,
+      arguments: {
+        "title": link.title,
+        "url": link.url,
+        "description": link.description,
+        "linkId": link.id,
+      }
+    );
+
+    if (result != null) {
+      Map<String, dynamic> editResult = result;
+      Link editItem = _items.firstWhere((item) => item.id == editResult["linkId"]);
+      editItem.title = editResult["title"];
+      editItem.url = editResult["url"];
+      editItem.description = editResult["description"];
+
+      setState(() { _items = _items; });
+      setListAtLocal();
+    }
+  }
+
   List<Widget> _getListItems() => _items
       .asMap()
       .map((i, item) => MapEntry(i, _buildTenableListTile(item, i)))
@@ -179,16 +203,6 @@ class _HomeState extends State<Home> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  // Expanded(
-                  //   flex: 5,
-                  //   child: Container(
-                  //   margin: const EdgeInsets.only(left: 10.0),
-                  //     child : Text(
-                  //       "${item.description}",
-                  //       overflow: TextOverflow.ellipsis,
-                  //     ),
-                  //   ),
-                  // ),
                   Expanded(
                     flex: 3,
                     child: Container(
@@ -224,21 +238,16 @@ class _HomeState extends State<Home> {
           color: Colors.blue,
           icon: Icons.edit,
           onTap: () {
-            // Navigator.push(
+            // Navigator.pushNamed(
             //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => EditLinkPage()
-            //   )
+            //   EditLinkPage.routeName,
+            //   arguments: {
+            //     "title": item.title,
+            //     "url": item.url,
+            //     "description": item.description,
+            //   }
             // );
-            Navigator.pushNamed(
-              context,
-              EditLinkPage.routeName,
-              arguments: ScreenArguments(
-                'TEST',
-                'TEST',
-                'function.',
-              ),
-            );
+            _moveEditPageAndEdit(context, item);
           },
         ),
         IconSlideAction(
